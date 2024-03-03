@@ -10,7 +10,7 @@ url='https://github.com/aio-libs/multidict'
 arch=('x86_64')
 license=('Apache-2.0')
 depends=('python' 'glibc')
-makedepends=('cython' 'python-setuptools' 'git')
+makedepends=('cython' 'python-setuptools' 'python-build' 'python-installer' 'python-wheel')
 checkdepends=('python-pytest' 'python-pytest-cov' 'python-pytest-runner' 'python-psutil' 'python-perf')
 source=(https://github.com/aio-libs/multidict/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz)
 sha512sums=('6f9e6ff16a104d40b0cb59860af9cb1a98e8d3a256626f77600c4895e6ef692b31880273f204e7ecdeb574407dd7c2e4326ad7cd9c08b1095011d6ba3793b86e')
@@ -18,7 +18,7 @@ b2sums=('2cf25ac2af57289432dfc6617f35a9f1310469b8d7b6a762e63f4f08b3cb8235c7115c4
 
 build() {
   cd ${_pkgname}-${pkgver}
-  python setup.py build
+  python -m build --wheel --no-isolation
 }
 
 check() {
@@ -28,7 +28,7 @@ check() {
 
 package() {
   cd ${_pkgname}-${pkgver}
-  python setup.py install --root="${pkgdir}" -O1 --skip-build
+  python -m installer --destdir="$pkgdir" dist/*.whl
 }
 
 # vim: ts=2 sw=2 et:
