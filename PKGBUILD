@@ -6,8 +6,8 @@
 # Contributor: renek <aur@spaceshore.net>
 
 _py="python"
-_pkgname=multidict
-pkgname="${_py}-${_pkgname}"
+_pkg=multidict
+pkgname="${_py}-${_pkg}"
 pkgver=6.0.5
 pkgrel=2
 pkgdesc='Asyncio-based multidict implementation for Python'
@@ -57,7 +57,7 @@ b2sums=(
 
 build() {
   cd \
-    "${_pkgname}-${pkgver}"
+    "${_pkg}-${pkgver}"
   "${_py}" \
     -m \
       build \
@@ -67,7 +67,7 @@ build() {
 
 check() {
   cd \
-    "${_pkgname}-${pkgver}"
+    "${_pkg}-${pkgver}"
   "${_py}" \
     -m venv \
     --system-site-packages \
@@ -85,7 +85,7 @@ check() {
 
 package() {
   cd \
-    "${_pkgname}-${pkgver}"
+    "${_pkg}-${pkgver}"
   "${_py}" \
     -m installer \
     --destdir="${pkgdir}" \
