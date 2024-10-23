@@ -6,6 +6,12 @@
 # Contributor: renek <aur@spaceshore.net>
 
 _py="python"
+_pyver="$( \
+  "${_py}" \
+    -V | \
+    awk \
+      '{print $2}')"
+_pymajver="${_pyver%.*}"
 _pkg=multidict
 pkgname="${_py}-${_pkg}"
 pkgver=6.0.5
@@ -28,7 +34,7 @@ license=(
   'Apache-2.0'
 )
 depends=(
-  "${_py}"
+  "${_py}>=${_pymajver}"
   'glibc'
 )
 makedepends=(
