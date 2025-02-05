@@ -1,10 +1,37 @@
 # SPDX-License-Identifier: AGPL-3.0
+
+#    ----------------------------------------------------------------------
+#    Copyright © 2024, 2025  Pellegrino Prevete
 #
+#    All rights reserved
+#    ----------------------------------------------------------------------
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 # Maintainer: Truocolo <truocolo@aol.com>
 # Maintainer: Pellegrino Prevete (tallero) <pellegrinoprevete@gmail.com>
 # Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
 # Contributor: renek <aur@spaceshore.net>
 
+_os="$( \
+  uname \
+    -o)"
+if [[ "${_os}" == "Android" ]]; then
+  _libc="ndk-sysroot"
+elif [[ "${_os}" == "GNU/Linux" ]]; then
+  _libc="glibc"
+fi
 _py="python"
 _pyver="$( \
   "${_py}" \
@@ -12,6 +39,9 @@ _pyver="$( \
     awk \
       '{print $2}')"
 _pymajver="${_pyver%.*}"
+_pyminver="${_pymajver#*.}"
+_pynextver="${_pymajver%.*}.$(( \
+  ${_pyminver} + 1))"
 _pkg=multidict
 pkgname="${_py}-${_pkg}"
 pkgver=6.0.5
@@ -35,7 +65,8 @@ license=(
 )
 depends=(
   "${_py}>=${_pymajver}"
-  'glibc'
+  "${_py}<${_pynextver}"
+  "${_libc}"
 )
 makedepends=(
   'cython'
@@ -45,11 +76,11 @@ makedepends=(
   "${_py}-wheel"
 )
 checkdepends=(
-  'python-pytest'
-  'python-pytest-cov'
-  'python-pytest'
-  'python-psutil'
-  'python-perf'
+  "${_py}-pytest"
+  "${_py}-pytest-cov"
+  "${_py}-pytest"
+  "${_py}-psutil"
+  "${_py}-perf"
 )
 source=(
   "${url}/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
