@@ -108,15 +108,16 @@ check() {
   cd \
     "${_pkg}-${pkgver}"
   "${_py}" \
-    -m venv \
-    --system-site-packages \
-    test-env
+    -m \
+      venv \
+      --system-site-packages \
+      "test-env"
   test-env/bin/"${_py}" \
     -m \
       installer \
-    dist/*.whl
+      "dist/"*".whl"
   cd tests
-  ../test-env/bin/"${_py}" \
+  "../test-env/bin/${_py}" \
     -m \
       pytest \
     -v
@@ -128,7 +129,7 @@ package() {
   "${_py}" \
     -m installer \
     --destdir="${pkgdir}" \
-    dist/*.whl
+    "dist/"*".whl"
 }
 
 # vim: ts=2 sw=2 et:
